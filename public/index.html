@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RoomRadar | Student Housing Near Campus</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="/">
+          <span class="brand-mark">RR</span>
+          <span>
+            <strong>RoomRadar</strong>
+            <small>Live closer to campus.</small>
+          </span>
+        </a>
+
+        <nav class="nav-actions">
+          <a class="button button-ghost" href="/">Home</a>
+          <a class="button button-ghost" href="/about">About Us</a>
+          <a class="button button-ghost" href="/contact">Contact Us</a>
+          <span id="userBadge" class="user-badge hidden"></span>
+          <a id="loginLink" class="button button-ghost" href="/login">Log in</a>
+          <a id="signupLink" class="button button-primary" href="/signup">Create account</a>
+          <button id="logoutButton" class="button button-ghost hidden" type="button">Log out</button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Student-first rental search</p>
+            <h1>Find rooms and flats near your college.</h1>
+            <p class="hero-text">
+              Search nearby listings, compare prices, and contact owners from one place.
+            </p>
+          </div>
+
+          <div class="hero-card">
+            <h2>Start a search</h2>
+            <p>Enter a college, university, or neighborhood to see nearby properties.</p>
+            <form id="heroSearchForm" class="stack-form">
+              <label>
+                <span>College or location</span>
+                <input id="heroSearchInput" type="text" placeholder="Ex: Graphic Era Hill University" />
+              </label>
+              <label>
+                <span>Distance</span>
+                <select id="heroDistanceSelect">
+                  <option value="2">Within 2 km</option>
+                  <option value="5" selected>Within 5 km</option>
+                  <option value="10">Within 10 km</option>
+                  <option value="20">Within 20 km</option>
+                </select>
+              </label>
+              <button class="button button-primary button-full" type="submit">Search listings</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="dashboardSection" class="dashboard">
+        <div class="container dashboard-grid">
+          <aside class="panel filter-panel">
+            <div class="panel-header">
+              <h2>Filters</h2>
+              <button id="resetFiltersButton" class="text-button" type="button">Reset</button>
+            </div>
+
+            <form id="filterForm" class="stack-form">
+              <label>
+                <span>College, university, or area</span>
+                <input id="searchInput" type="text" />
+              </label>
+
+              <label>
+                <span>Listing type</span>
+                <select id="listingModeFilter">
+                  <option value="">All</option>
+                  <option value="rent">Rent</option>
+                  <option value="sale">Sale</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Property type</span>
+                <select id="propertyTypeFilter">
+                  <option value="">All</option>
+                  <option value="pg">PG</option>
+                  <option value="hostel">Hostel</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="flat">Flat</option>
+                  <option value="house">House</option>
+                  <option value="studio">Studio</option>
+                </select>
+              </label>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Min price</span>
+                  <input id="minPriceFilter" type="number" min="0" placeholder="5000" />
+                </label>
+                <label>
+                  <span>Max price</span>
+                  <input id="maxPriceFilter" type="number" min="0" placeholder="25000" />
+                </label>
+              </div>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Distance (km)</span>
+                  <input id="distanceFilter" type="number" min="1" max="50" value="5" />
+                </label>
+                <label>
+                  <span>Sort</span>
+                  <select id="sortFilter">
+                    <option value="distance">Nearest first</option>
+                    <option value="newest" selected>Newest</option>
+                    <option value="priceAsc">Price: low to high</option>
+                    <option value="priceDesc">Price: high to low</option>
+                  </select>
+                </label>
+              </div>
+
+              <button class="button button-primary button-full" type="submit">Apply filters</button>
+            </form>
+          </aside>
+
+          <div class="content-stack">
+            <div class="panel listings-panel">
+              <div class="panel-header">
+                <div>
+                  <h2>Listings</h2>
+                  <p id="resultsMeta"></p>
+                </div>
+                <span id="listingCountBadge" class="pill">0 results</span>
+              </div>
+
+              <div id="listingsGrid" class="listing-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ownerWorkspace" class="workspace hidden">
+        <div class="container workspace-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h2 id="ownerFormHeading">Add a property</h2>
+                <p>Add or edit your listing details here.</p>
+              </div>
+              <button id="clearOwnerFormButton" class="text-button hidden" type="button">Clear edit</button>
+            </div>
+
+            <form id="propertyForm" class="stack-form owner-form">
+              <div class="split-inputs">
+                <label>
+                  <span>Title</span>
+                  <input name="title" type="text" required />
+                </label>
+                <label>
+                  <span>Mode</span>
+                  <select name="listingMode" required>
+                    <option value="rent">Rent</option>
+                    <option value="sale">Sale</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Property type</span>
+                  <select name="propertyType" required>
+                    <option value="pg">PG</option>
+                    <option value="hostel">Hostel</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="flat">Flat</option>
+                    <option value="house">House</option>
+                    <option value="studio">Studio</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Price</span>
+                  <input name="price" type="number" min="0" required />
+                </label>
+              </div>
+
+              <label>
+                <span>Description</span>
+                <textarea name="description" rows="4" required></textarea>
+              </label>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Address</span>
+                  <input name="address" type="text" required />
+                </label>
+                <label>
+                  <span>City</span>
+                  <input name="city" type="text" required />
+                </label>
+              </div>
+
+              <div class="split-inputs">
+                <label>
+                  <span>State</span>
+                  <input name="state" type="text" />
+                </label>
+                <label>
+                  <span>Landmark</span>
+                  <input name="landmark" type="text" />
+                </label>
+              </div>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Nearby college</span>
+                  <input name="nearbyCollege" type="text" />
+                </label>
+                <label>
+                  <span>Distance from college (km)</span>
+                  <input name="distanceFromCollege" type="number" min="0" step="0.1" />
+                </label>
+              </div>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Bedrooms</span>
+                  <input name="bedrooms" type="number" min="0" step="1" value="1" />
+                </label>
+                <label>
+                  <span>Bathrooms</span>
+                  <input name="bathrooms" type="number" min="0" step="1" value="1" />
+                </label>
+              </div>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Furnishing</span>
+                  <select name="furnishing">
+                    <option value="unfurnished">Unfurnished</option>
+                    <option value="semi-furnished" selected>Semi-furnished</option>
+                    <option value="fully-furnished">Fully-furnished</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Owner phone</span>
+                  <input name="contactPhone" type="text" />
+                </label>
+              </div>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Owner email</span>
+                  <input name="contactEmail" type="email" />
+                </label>
+                <label>
+                  <span>Image URLs</span>
+                  <input name="images" type="text" placeholder="Comma-separated URLs" />
+                </label>
+              </div>
+
+              <label>
+                <span>Amenities</span>
+                <input name="amenities" type="text" placeholder="Wi-Fi, Laundry, Meals, Parking" />
+              </label>
+
+              <div class="split-inputs">
+                <label>
+                  <span>Latitude</span>
+                  <input id="ownerLatitude" name="latitude" type="number" min="-90" max="90" step="0.000001" required />
+                </label>
+                <label>
+                  <span>Longitude</span>
+                  <input id="ownerLongitude" name="longitude" type="number" min="-180" max="180" step="0.000001" required />
+                </label>
+              </div>
+
+              <div class="inline-actions">
+                <button class="button button-primary" type="submit">Save listing</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Your listings</h2>
+              <span id="ownerListingMeta" class="pill">0 listings</span>
+            </div>
+            <div id="ownerListings" class="owner-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ownerInboxSection" class="workspace hidden">
+        <div class="container">
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Student inquiries</h2>
+              <button id="refreshInboxButton" class="button button-secondary" type="button">Refresh inbox</button>
+            </div>
+            <div id="messageInbox" class="message-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside id="propertyDrawer" class="drawer hidden" aria-hidden="true">
+      <div class="drawer-card">
+        <button id="closeDrawerButton" class="drawer-close" type="button">Close</button>
+        <div id="drawerContent"></div>
+      </div>
+    </aside>
+
+    <div id="contactModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card">
+        <div class="panel-header">
+          <div>
+            <h2>Contact owner</h2>
+            <p id="contactPropertyTitle">Send a message about this property.</p>
+          </div>
+          <button id="closeContactModalButton" class="drawer-close" type="button">Close</button>
+        </div>
+
+        <form id="contactForm" class="stack-form">
+          <label>
+            <span>Your phone</span>
+            <input name="phone" type="text" placeholder="Optional" />
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="5" required placeholder="I am interested in this property and would like to know more about availability."></textarea>
+          </label>
+          <button class="button button-primary button-full" type="submit">Send inquiry</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="appToast" class="toast hidden"></div>
+
+    <script type="module" src="/assets/js/app.js"></script>
+  </body>
+</html>

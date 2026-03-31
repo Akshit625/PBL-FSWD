@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In | RoomRadar</title>
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body class="auth-page">
+    <main class="auth-layout">
+      <section class="auth-side">
+        <a class="brand" href="/">
+          <span class="brand-mark">RR</span>
+          <span>
+            <strong>RoomRadar</strong>
+            <small>Back to search</small>
+          </span>
+        </a>
+
+        <div class="auth-copy">
+          <p class="eyebrow">Welcome back</p>
+          <h1>Log in to continue.</h1>
+          <p>Students can browse listings and owners can manage properties from the same dashboard.</p>
+        </div>
+      </section>
+
+      <section class="auth-card-shell">
+        <form id="loginForm" class="auth-card stack-form" method="post" action="/login" novalidate>
+          <div>
+            <h2>Log in</h2>
+            <p>Use your RoomRadar account to browse or manage listings.</p>
+          </div>
+
+          <label>
+            <span>Email</span>
+            <input
+              name="email"
+              type="email"
+              required
+              autocomplete="email"
+              placeholder="you@example.com"
+            />
+          </label>
+
+          <label>
+            <span>Password</span>
+            <input name="password" type="password" required autocomplete="current-password" />
+          </label>
+
+          <button class="button button-primary button-full" type="submit">Log in</button>
+          <p class="auth-switch">New here? <a href="/signup">Create an account</a></p>
+        </form>
+      </section>
+    </main>
+
+    <div id="appToast" class="toast hidden"></div>
+    <script type="module" src="/assets/js/auth-pages.js"></script>
+  </body>
+</html>
